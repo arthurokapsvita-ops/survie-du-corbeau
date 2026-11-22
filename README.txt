@@ -1,12 +1,6 @@
-SURVIE DU CORBEAU — PWA v0.1
-
-Pour installer sur Android :
-1. Héberger les fichiers sur un site HTTPS (GitHub Pages, Netlify, etc.).
-2. Ouvrir l'adresse dans Chrome Android.
-3. Menu ⋮ > Ajouter à l'écran d'accueil > Installer (selon navigateur).
-
-Un fichier index.html ouvert directement permet un essai, mais l'installation PWA et le mode hors ligne nécessitent une origine HTTPS ou localhost.
-
-La sauvegarde utilise localStorage, donc reste liée au navigateur et au domaine. Utiliser Exporter la sauvegarde régulièrement.
-
-LifeUp/Tasker : pas encore connectés dans cette première version. La saisie de productivité est manuelle.
+SURVIE DU CORBEAU V0.2
+1. Sauvegardez les fichiers de votre V0.1 avant toute modification.
+2. Dans GitHub, ouvrez votre dépôt et remplacez les fichiers index.html, sw.js, manifest.webmanifest et icon.svg par ceux de ce dossier (ne téléversez pas le ZIP).
+3. Attendez le déploiement GitHub Pages, puis rechargez votre site.
+4. Dans l'application, ouvrez Données > Exporter la sauvegarde régulièrement.
+IMPORTANT : cette version utilise une clé de stockage séparée de la V0.1. Elle initialise les 9 compétences avec leurs niveaux fournis, mais ne migre pas automatiquement les anciennes jauges. Le calcul des jauges est un mécanisme ludique, pas médical.

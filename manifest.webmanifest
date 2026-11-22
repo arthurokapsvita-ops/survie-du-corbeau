@@ -1,1 +1,1 @@
-{"name":"Survie du Corbeau","short_name":"Corbeau","start_url":"./index.html","display":"standalone","background_color":"#101820","theme_color":"#101820","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
+{"name":"Survie du Corbeau V0.2","short_name":"Corbeau","start_url":"./","scope":"./","display":"standalone","background_color":"#0e1921","theme_color":"#0e1921","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]}
