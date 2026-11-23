@@ -1,17 +1,26 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0e1921"><link rel="manifest" href="manifest.webmanifest"><title>Survie du Corbeau V0.3.4</title><style>
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0e1921"><link rel="manifest" href="manifest.webmanifest"><title>Survie du Corbeau V0.3.5</title><style>
 :root{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:#e9eff3;background:#0e1921}*{box-sizing:border-box}body{margin:0;padding:22px 16px 90px;max-width:760px;margin-inline:auto}h1{font-size:2rem;margin:12px 0}h2{margin:0 0 14px;font-size:1.35rem}p,.muted{color:#afbec8}header p{margin-top:0}.card{background:#1b2b36;border:1px solid #38505d;border-radius:20px;padding:19px;margin:16px 0;box-shadow:0 4px 15px #0002}.meter{margin:13px 0 18px}.line{display:flex;justify-content:space-between;gap:12px;align-items:center}.bar{height:13px;background:#3a4750;border-radius:20px;overflow:hidden;margin-top:8px}.fill{height:100%;border-radius:20px;transition:width .3s}.negative{color:#ff8787}.small{font-size:.85rem;color:#b9c7d0}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}button{background:#365b70;border:1px solid #51768a;color:white;padding:12px 14px;border-radius:12px;font-weight:700;cursor:pointer}button:disabled{opacity:.45}button.primary{background:#d6a849;color:#17232b;border-color:#e9c879}button.danger{background:#693a43}input{background:#0f1b23;color:white;border:1px solid #6b8492;border-radius:9px;padding:9px;width:100%}.skill{border-top:1px solid #40515b;padding:17px 0}.skill:first-child{border-top:0}.skill h3{margin:0;font-size:1.06rem}.skill .actions button{font-size:.86rem}.badge{border-radius:99px;padding:4px 8px;background:#314d60;font-size:.75rem}.note{background:#253741;padding:12px;border-radius:12px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.two>*{min-width:0}details{margin:16px 0}summary{cursor:pointer;font-weight:700}.footer{font-size:.8rem;color:#95aab7}.clock{font-variant-numeric:tabular-nums;font-weight:700;color:#f2c96f}@media(max-width:380px){body{padding-inline:10px}.card{padding:13px}button{padding:10px}}
 
 nav{display:flex;gap:7px;overflow-x:auto;padding-bottom:5px}nav button{white-space:nowrap}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stats .note{font-size:.9rem}.number{font-size:1.15rem;font-weight:800;color:#f2c96f}.skill .line{align-items:flex-start}input[type=number]{max-width:220px}.negative-bar{background:#7c3941!important}.subtle{font-size:.8rem;color:#9db3c0}
-</style></head><body><header><h1>🐦‍⬛ Survie du Corbeau</h1><p>V0.3 · Le Repos Mathématique</p></header><div id="app"></div><script>(()=>{'use strict';
+</style></head><body><header><h1>🐦‍⬛ Survie du Corbeau</h1><p>V0.3.5 · Ajustement du Royaume</p></header><div id="app"></div><script>(()=>{'use strict';
 const KEY='corbeau-survie-v03',OLD='corbeau-survie-v02';
-const specs=[['sport','🦁','Sport',20],['rando','🏹','Randonnée',68],['hygiene','🧹','Hygiène',28],['cuisine','🍲','Cuisine',27],['montage','🎬','Montage vidéo',43],['drone','🪽','Drone',18],['travail','🪨','Travail alimentaire',157],['russe','📚','Parler russe',12],['admin','🗒️','Administratif',9]];
+const specs=[['sport','🦁','Sport',20],['rando','🏹','Randonnée',68],['hygiene','🧹','Hygiène',28],['cuisine','🍲','Cuisine',27],['montage','🎬','Montage vidéo',43],['drone','🪽','Drone',18],['travail','🪨','Travail alimentaire',480],['russe','📚','Parler russe',12],['admin','🗒️','Administratif',9]];
 const now=()=>Date.now(),clamp=(x,a,b)=>Math.min(b,Math.max(a,x)),finite=(v,d)=>Number.isFinite(Number(v))?Number(v):d;
 const $=s=>document.querySelector(s);let state;
 const defaultSkills=()=>Object.fromEntries(specs.map(([id,,,level])=>[id,{level,xp:0,reserve:level,running:false,elapsed:0}]));
-function defaults(){return {version:3,updated:now(),energy:100,food:2000,water:1500,alert:17,sleeping:false,skills:defaultSkills()}}
+function defaults(){return {version:3,updated:now(),energy:50,food:2000,water:1500,alert:17,sleeping:false,skills:defaultSkills()}}
 function migrate(old){let n=defaults();if(!old||typeof old!=='object')return n;n.energy=finite(old.energy,100);n.food=finite(old.food,100)/100*2000;n.water=finite(old.water,100)/100*1500;n.alert=finite(old.alert,100)/100*17;n.sleeping=!!old.sleeping;for(const [id,,,level] of specs){let o=old.skills?.[id];if(o){n.skills[id]={level:Math.max(1,Math.floor(finite(o.level,level))),xp:Math.max(0,finite(o.xp,0)),reserve:finite(o.reserve,level),running:!!o.running,elapsed:Math.max(0,finite(o.elapsed,0))}}}n.updated=finite(old.updated,now());return n}
 try{let saved=localStorage.getItem(KEY);state=saved?JSON.parse(saved):migrate(JSON.parse(localStorage.getItem(OLD)||'null'))}catch{state=defaults()}
 if(!state||state.version!==3||!state.skills)state=defaults();for(const [id,,,level] of specs)if(!state.skills[id])state.skills[id]={level,xp:0,reserve:level,running:false,elapsed:0};
+// Ajustement ponctuel V0.3.5 : conserver toutes les autres données et ne pas réappliquer au rechargement.
+const PATCH_KEY='corbeau-survie-v035-ajustement';
+if(localStorage.getItem(PATCH_KEY)!=='applique'){
+  state.skills.travail.level=480;
+  state.energy=50;
+  // Conserver la réserve et les XP existants : seul le niveau demandé change.
+  localStorage.setItem(KEY,JSON.stringify(state));
+  localStorage.setItem(PATCH_KEY,'applique');
+}
 const save=()=>{state.updated=now();localStorage.setItem(KEY,JSON.stringify(state))};
 const pct=(s)=>s.reserve/Math.max(1,s.level)*100;
 const cost=s=>Math.max(0,5*(1-pct(s)/100));
